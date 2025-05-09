@@ -35,7 +35,7 @@ export default function Layout({ children }) {
               />
             }
           />
-          <div className="flex-grow mb-[5rem] mt-[3rem]">{children}</div>
+          <div className="flex-grow mb-[5rem] mt-[6rem]">{children}</div>
           <Footer />
         </div>
       </ThemeProvider>

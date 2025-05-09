@@ -8,6 +8,7 @@ import { styled, alpha } from "@mui/material/styles";
 import useGetProducts from "../requests/useGetProducts";
 import { useContext, useRef } from "react";
 import { SearchContext } from "../App";
+import { useLocation } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -67,23 +68,20 @@ export default function Header({ buttonDarkMode }) {
           item.price.toString().includes(searchVal.toString())
       )
     );
-
   }
 
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar className="bg-[#dec9e9] w-full">
+        <AppBar position="fixed">
+          <Toolbar className="bg-[#dec9e9] w-full" sx={{ height: "68px" }}>
             <IconButton
               size="large"
               edge="start"
               color="#47126b"
               aria-label="open drawer"
               sx={{ mr: 2 }}
-            >
-              {/* <MenuIcon sx={{backgroundColor:"47126b"}}/> */}
-            </IconButton>
+            ></IconButton>
             <div className="flex justify-between w-full">
               <Search>
                 <SearchIconWrapper>
@@ -97,7 +95,7 @@ export default function Header({ buttonDarkMode }) {
                   inputProps={{ "aria-label": "search" }}
                 />
               </Search>
-              {/* <AccountCircleIcon fontSize="large"sx={{color:"#47126b",marginRight:"0px"}}></AccountCircleIcon> */}
+
               {buttonDarkMode}
             </div>
           </Toolbar>
