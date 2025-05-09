@@ -33,6 +33,10 @@ export default function Footer() {
     navigate("/shopping");
   }
 
+  function favoriteHandler(){
+    navigate("/favorite");
+  }
+
   return (
     <>
       <Box sx={{ width: "100%", position: "fixed", bottom: "0" }}>
@@ -49,6 +53,7 @@ export default function Footer() {
             icon={<HomeIcon fontSize="medium" sx={{ color: "#47126b" }} />}
           />
           <BottomNavigationAction
+          onClick={favoriteHandler}
             icon={<FavoriteIcon fontSize="medium" sx={{ color: "#47126b" }} />}
           />
           <BottomNavigationAction

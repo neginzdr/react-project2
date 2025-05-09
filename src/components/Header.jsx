@@ -1,13 +1,13 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { styled, alpha } from "@mui/material/styles";
+import useGetProducts from "../requests/useGetProducts";
+import { useContext, useRef } from "react";
+import { SearchContext } from "../App";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -51,7 +51,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header() {
+export default function Header({ buttonDarkMode }) {
+  const { data } = useGetProducts();
+  const { searchItems, setSearchItems } = useContext(SearchContext);
+
+  const inputSearchRef = useRef();
+
+  function searchHandler() {
+    const searchVal = inputSearchRef.current.value;
+
+    setSearchItems(
+      data?.data?.filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchVal.toLowerCase()) ||
+          item.price.toString().includes(searchVal.toString())
+      )
+    );
+
+  }
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -64,19 +82,24 @@ export default function Header() {
               aria-label="open drawer"
               sx={{ mr: 2 }}
             >
-              <MenuIcon />
+              {/* <MenuIcon sx={{backgroundColor:"47126b"}}/> */}
             </IconButton>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon sx={{ color: "#47126b" }} />
-              </SearchIconWrapper>
-              <StyledInputBase
-                sx={{ color: "#47126b" }}
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
-            {/* <AccountCircleIcon fontSize="large"sx={{color:"#47126b",marginRight:"0px"}}></AccountCircleIcon> */}
+            <div className="flex justify-between w-full">
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon sx={{ color: "#47126b" }} />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  inputRef={inputSearchRef}
+                  onChange={searchHandler}
+                  sx={{ color: "#47126b" }}
+                  placeholder="Search…"
+                  inputProps={{ "aria-label": "search" }}
+                />
+              </Search>
+              {/* <AccountCircleIcon fontSize="large"sx={{color:"#47126b",marginRight:"0px"}}></AccountCircleIcon> */}
+              {buttonDarkMode}
+            </div>
           </Toolbar>
         </AppBar>
       </Box>

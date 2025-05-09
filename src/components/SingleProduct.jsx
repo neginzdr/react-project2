@@ -1,11 +1,9 @@
-import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import StarRateIcon from "@mui/icons-material/StarRate";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function SingleProduct({
   image,
@@ -15,10 +13,18 @@ export default function SingleProduct({
   rate,
   id,
   buttons,
+  favorite,
+  addCartButton,
+  removeFavorite,
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  function singleProductHandler() {
+  function singleProductHandler(evt) {
+    evt.stopPropagation();
+    if (!id) return;
+    if (location.pathname === `/products/${id}`) return;
+
     navigate(`/products/${id}`);
   }
 
@@ -27,18 +33,27 @@ export default function SingleProduct({
       <Card
         onClick={singleProductHandler}
         className="cursor-pointer"
-        sx={{ maxWidth: 370, border: "2px solid #47126b", marginTop: "10px" }}
+        sx={{
+          maxWidth: 370,
+          minHeight:420,
+          border: "2px solid #47126b",
+          marginTop: "10px",
+          position: "relative",
+        }}
       >
+        <div>{favorite}</div>
+        <div>{removeFavorite}</div>
+
         <img
           src={image}
-          className="w-full  object-contain h-[10rem] m-[1rem]"
+          className="aspect-square object-contain w-full "
         />
         <CardContent>
           <Typography gutterBottom variant="p" component="div">
             {title}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }}>
-           {description}
+            {description}
           </Typography>
           <div className="mt-[1.5rem] flex justify-between">
             <h6>
@@ -46,6 +61,7 @@ export default function SingleProduct({
               {price}
             </h6>
 
+            {addCartButton}
             <div className="flex">
               <StarRateIcon
                 fontSize="small"
@@ -56,9 +72,7 @@ export default function SingleProduct({
           </div>
         </CardContent>
 
-        <CardActions className="flex justify-center ">
-          {buttons}
-        </CardActions>
+        <CardActions className="flex justify-center">{buttons}</CardActions>
       </Card>
     </>
   );
